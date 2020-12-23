@@ -1,0 +1,132 @@
+\usepackage{tikz}
+\usepackage{bm}
+
+\newcommand\vennTwo[6]{
+
+  \def\setA{(3, 3) circle (2)}
+  \def\setB{(5, 3) circle (2)}
+  \def\samplespace{(0.6,0.6) rectangle (9, 5.9)}
+
+  \definecolor{orchid}{rgb}{0.85, 0.44, 0.84}
+  \definecolor{mayablue}{rgb}{0.45, 0.76, 0.98}
+
+  \begin{center}
+  
+    \begin{tikzpicture}[font = \large]
+
+      \begin{scope}[fill opacity = 0.3]
+        \fill[mayablue] \setA;
+        \fill[orchid] \setB;
+      \end{scope}  
+  
+      \draw \setA (2, 5.5) node[below] {$\bm{A}$};
+      \draw \setB (6, 5.5) node [below] {$\bm{B}$};
+      \draw \samplespace (9.5, 5.5) node [below] {$\bm{S}$};
+
+      \draw (2, 3) node [above] {$A \cap B^C$};
+      \draw (2, 3) node [below] {#1};
+
+      \draw (4, 3) node [above] {$A \cap B$};
+      \draw (4, 3) node [below] {#2};
+
+      \draw (6, 3) node [above] {$A^C \cap B$};
+      \draw (6, 3) node [below] {#3};
+
+      \draw (8, 3) node [above] {$A^C \cap B^C$};
+      \draw (8, 3) node [below] {#4};
+
+      \matrix [draw, below right, ampersand replacement = \&] at (9.5, 4) {
+        \node[shape = circle, draw = mayablue, line width = 2]{$\bm{A}$}; \& 
+        \node{#5}; \\
+        \node[shape = circle, draw = orchid, line width = 2]{$\bm{B}$}; \& 
+        \node{#6}; \\
+      };
+
+    \end{tikzpicture}
+    
+  \end{center}
+
+}
+
+
+\newcommand\vennThree[8]{
+
+  \def \one {{#1}}
+  \def \two {{#2}}
+  \def \three {{#3}}
+  \def \four {{#4}}
+  \def \five {{#5}}
+  \def \six {{#6}}
+  \def \seven {{#7}}
+  \def \eight {{#8}}
+  
+  \vennThreeRelay
+}
+
+\newcommand\vennThreeRelay[3]{
+
+  \definecolor{orchid}{rgb}{0.85, 0.44, 0.84}
+  \definecolor{mayablue}{rgb}{0.45, 0.76, 0.98}
+  \definecolor{daffodil}{rgb}{1.0, 1.0, 0.19}
+  
+  \def\setA{(4.2, 7) circle (3)}
+  \def\setB{(6.8, 7) circle (3)}
+  \def\setC{(5.5, 4.5) circle (3)}
+  \def\samplespace{(0.3,1.2) rectangle (11, 10.8)}
+  
+  \begin{center}
+  
+    \begin{tikzpicture}[font = \large]
+
+      \begin{scope}[fill opacity = 0.3]
+        \fill[mayablue] \setA;
+        \fill[orchid] \setB;
+        \fill[daffodil] \setC;
+      \end{scope}
+      
+      \draw \setA (2, 10) node [above] {$\bm{A}$};
+      \draw \setB (9, 10) node [above] {$\bm{B}$};
+      \draw \setC (2.5, 1.5) node [above] {$\bm{C}$};
+      \draw \samplespace (12, 10) node [above] {$\bm{S}$};;
+      
+      \draw (2.7, 7.3) node [above] {$AB^CC^C$};
+      \node [below] at (2.7, 7.3) {\one};
+      
+      \draw (5.5, 8.3) node [above] {$ABC^C$};
+      \node [below] at (5.5, 8.3) {\two};
+      
+      \draw (8.3, 7.3) node [above] {$A^CBC^C$};
+      \node [below] at (8.3, 7.3) {\three};
+      
+      \draw (7.4, 4.8) node [above] {$A^CBC$};
+      \node [below] at (7.4, 4.8) {\four};
+      
+      \draw (5.5, 3) node [above] {$A^CB^CC$};
+      \node [below] at (5.5, 3) {\five};
+      
+      \draw (3.6, 4.8) node [above] {$AB^CC$};
+      \node [below] at (3.6, 4.8) {\six};
+      
+      \draw (5.5, 6) node [above] {$ABC$};
+      \node [below] at (5.5, 6) {\seven};
+      
+      \node [above] at (9.2, 2) {$A^CB^CC^C$};
+      \node [below] at (9.2, 2) {\eight};
+      
+      \matrix [draw, below right, ampersand replacement = \&] at (12, 7) {
+        \node[shape = circle, draw = mayablue, line width = 2]{$\bm{A}$}; \& 
+        \node{#1}; \\
+        \node[shape = circle, draw = orchid, line width = 2]{$\bm{B}$}; \& 
+        \node{#2}; \\
+        \node[shape = circle, draw = daffodil, line width = 2]{$\bm{C}$}; \& 
+        \node{#3}; \\
+      };
+      
+      \node [left] at (11, 0.8) {\scriptsize{$ABC$ is equivalent to $A \cap B \cap C$ for three sets $A$, $B$, and $C$}};
+      
+    \end{tikzpicture}
+  
+  \end{center}  
+
+}
+

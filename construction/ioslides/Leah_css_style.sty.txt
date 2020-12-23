@@ -1,0 +1,36 @@
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    "HTML-CSS" : {
+        availableFonts : ["STIX"],
+        preferredFont : "STIX",
+        webFont : "STIX-Web",
+        imageFont : null
+    }
+});
+</script>
+<style>
+p {
+ color: black;
+}
+h2, h3, h4, h5, h6 {
+ color: #3f1f69;
+}
+ul {
+  color: black;
+}
+ol {
+  color: black;
+}
+slides > slide.title-slide hgroup h1 {
+  color: #3f1f69;
+}
+slides > slide.title-slide p {
+  color: black;
+}
+\td {
+  color: black;
+}
+</style>
