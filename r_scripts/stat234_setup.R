@@ -50,8 +50,10 @@ stat234_setup = function(install_r_paks = TRUE, update_r_paks = TRUE, install_ti
         tinytex::install_tinytex(bundle = "TinyTeX-0")
       } else if (is.na(tl_location)) {
         tinytex::install_tinytex(bundle = "TinyTeX-0")
-      } else if (tl_location == "/usr/share/texlive") {
-        tinytex::install_tinytex(bundle = "TinyTeX-0", dir = "/cloud/project/tt")
+      } else if (tl_location == "/cloud/project/tt") {
+        ## Posit appears to have **recently** moved 2020 install from /usr/share/texlive
+        # tinytex::install_tinytex(bundle = "TinyTeX-0", force = TRUE, dir = tl_location)
+        tinytex::reinstall_tinytex(force = TRUE, dir = tl_location)
       } else {
         if (tinytex::is_tinytex()) {
           cat("TinyTeX already installed; proceeding to LaTeX packages.\n")
