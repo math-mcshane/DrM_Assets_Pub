@@ -28,7 +28,8 @@ stat234_setup = function(install_r_paks = TRUE, update_r_paks = TRUE, install_ti
     stat234_R_paks = c("tinytex", "quarto", "tidyverse", "mosaic", "kableExtra",
                        "cowplot", "GGally", "janitor", "gridExtra", "GLMsData",
                        "openintro", "Stat2Data", "palmerpenguins", "mosaicData",
-                       "nlme", "survival", "fivethirtyeight", "formatR")
+                       "nlme", "survival", "fivethirtyeight", "formatR", 
+                      "magick")
     pak::pkg_install(stat234_R_paks)
   }
 
