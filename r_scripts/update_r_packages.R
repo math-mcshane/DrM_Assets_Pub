@@ -57,12 +57,22 @@ no_vec_coalesce = function(data) {
   return(package_vector)
 }
 
-update_paks = function() {
+update_paks = function(cran_only = FALSE) {
+  pak::meta_update()
   package_vector = pak::pkg_list() |>
     tibble::as_tibble() |>
     no_vec_coalesce()
-  pak::meta_update()
+
+  package_vector_not_cran = package_vector |> stringr::str_subset("::|/")
+  if (cran_only) {
+    package_vector = package_vector |>
+      stringr::str_subset("::|/", negate = cran_only)
+    package_vector_not_cran = vector(mode = "character")
+  }
+  package_vector = package_vector[-which(!(package_vector %in% (tools::CRAN_package_db() |> dplyr::pull(Package))))]
+  package_vector = c(package_vector, package_vector_not_cran)
+
   pak::pkg_install(package_vector, upgrade = TRUE, ask = FALSE)
   pak::cache_clean()
 }
-update_paks()
+update_paks(cran_only = FALSE)
