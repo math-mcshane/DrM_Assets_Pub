@@ -1,0 +1,54 @@
+---
+format:
+  pdf:
+    # latex-auto-install: false
+    include-in-header:
+      text: |
+        \usepackage{fancyhdr}
+        \addtokomafont{disposition}{\rmfamily}
+        \definecolor{darkgreen}{RGB}{0, 128, 0}
+        \lhead{ \textbf{\Large Name: }  }
+        \rhead{ STATXXX with Dr. McShane \\ \textbf{QQYY Exam} }
+        \chead{     }
+params:
+  student: " "
+  section: " "
+---
+
+`r sprintf(ifelse(params[["section"]] != " ", paste0("\\lhead{ \\Large \\textbf{Name: \\textcolor{blue}{ ", params[["student"]], " }", "\\textcolor{darkgreen}{ ", "[ID: ", params[["section"]], "]}}}"), " "))`
+
+\pagestyle{fancy}
+
+```{r render_chunk, eval = FALSE, echo = FALSE}
+roster = readr::read_csv("roster.csv")
+# roster = roster |>
+#   filter(Exam != "SDS")
+
+for (i in seq(len = nrow(roster))) {
+  file_name = paste0(
+      "STAT-XXX-QQYY-Exam-", 
+      roster[["ID"]][i], "-",
+      roster[["Last"]][i], "-",
+      roster[["First"]][i], ".pdf"
+    )
+  quarto::quarto_render(
+    input = "STAT-XXX-QQYY-Exam.qmd",
+    output_file = file_name,
+    execute_params = list(
+      student = paste(roster[["First"]][i], roster[["Last"]][i]), 
+      section = roster[["ID"]][i]
+    )
+  )
+  fs::file_move(path = file_name, new_path = paste0("printing/", file_name))
+}
+```
+
+This is the exam text. 
+
+This is the exam text. 
+
+This is the exam text. 
+
+This is the exam text. 
+
+
