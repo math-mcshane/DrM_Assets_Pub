@@ -19,32 +19,47 @@ if (R_not_updated) {
          ":\nTools -> Global Options -> R version -> Change")
   stop(message)
 }
+operating_system = c("Windows", "Ubuntu", "macOS") |>
+  (\(y) y[sapply(X = y, FUN = grepl, x = sessionInfo()$running)])()
 
-stat234_setup = function(install_r_paks = TRUE, update_r_paks = TRUE, install_tinytex = TRUE, install_latex_paks = TRUE) {
+stat234_setup = function(
+    install_r_paks = TRUE,
+    update_r_paks = TRUE,
+    install_tinytex = TRUE,
+    install_latex_paks = TRUE,
+    use_pak = TRUE
+  ) {
 
-  if (install_r_paks){
+  if (use_pak & !any(installed.packages()[,1] == "pak")) install.packages("pak")
+
+  if (install_r_paks) {
     cat("Installing necessary R packages.\n")
-    if (!any(installed.packages()[,1] == "pak")) install.packages("pak")
     stat234_R_paks = c("tinytex", "quarto", "tidyverse", "mosaic", "kableExtra",
                        "cowplot", "GGally", "janitor", "gridExtra", "GLMsData",
                        "openintro", "Stat2Data", "palmerpenguins", "mosaicData",
-                       "nlme", "survival", "fivethirtyeight", "formatR", 
-                      "magick")
-    pak::pkg_install(stat234_R_paks)
+                       "nlme", "survival", "fivethirtyeight", "formatR",
+                       "magick")
+    if (use_pak) {
+      pak::pkg_install(stat234_R_paks)
+    } else {
+      utils::install.packages(stat234_R_paks)
+    }
   }
 
   if (update_r_paks) {
-    cat("Updating installed R packages.\n")
-    drm_git_repo = "https://raw.githubusercontent.com/math-mcshane/DrM_Assets_Pub/"
-    update_script = "refs/heads/master/r_scripts/update_r_packages.R"
-    source(paste0(drm_git_repo, update_script))
+    if (use_pak) {
+      cat("Updating installed R packages using the pak package.\n")
+      drm_git_repo = "https://raw.githubusercontent.com/math-mcshane/DrM_Assets_Pub/"
+      update_script = "refs/heads/master/r_scripts/update_r_packages.R"
+      source(paste0(drm_git_repo, update_script))
+    } else {
+      cat("Using utils::update.packages. This may take longer than using pak.\n")
+      utils::update.packages(ask = FALSE, checkBuilt = TRUE, quiet = TRUE)
+    }
   }
 
   if (install_tinytex) {
     cat("Installing Tex Live Manager via R's tinytex package.\n")
-    operating_system = capture.output(sessionInfo())[3] |>
-      stringr::str_extract(c("Windows", "Ubuntu", "macOS")) |>
-      purrr::discard(is.na)
     if (!(operating_system %in% c("Windows", "macOS"))) {
       tl_location = substr(x = tinytex::tlmgr_version("raw")[2], start = 27, stop = 44)
       if (is.null(tl_location)) {
