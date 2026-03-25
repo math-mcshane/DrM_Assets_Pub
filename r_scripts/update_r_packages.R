@@ -16,7 +16,7 @@ pak::pak("tidyverse")
 no_vec_coalesce = function(data) {
   pak_table = {{data}}
   columns_available = pak::pkg_list() |>
-    tibble::as_tibble() |>
+    # tibble::as_tibble() |>
     within(data = _, list())
   make_own = lapply(
     X = c("remotetype", "remoteusername", "remoterepo"),
@@ -57,10 +57,11 @@ no_vec_coalesce = function(data) {
   return(package_vector)
 }
 
+# cran_only = TRUE will only update the packages available on CRAN
 update_paks = function(cran_only = FALSE) {
   pak::meta_update()
   package_vector = pak::pkg_list() |>
-    tibble::as_tibble() |>
+    # tibble::as_tibble() |>
     no_vec_coalesce()
 
   package_vector_not_cran = package_vector |> stringr::str_subset("::|/")
