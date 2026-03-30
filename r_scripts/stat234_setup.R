@@ -63,19 +63,27 @@ stat234_setup = function(
     if (!(operating_system %in% c("Windows", "macOS"))) {
       tl_location = substr(x = tinytex::tlmgr_version("raw")[2], start = 27, stop = 44)
       if (is.null(tl_location)) {
-        tinytex::install_tinytex(bundle = "TinyTeX-0")
+        tinytex::install_tinytex(force = TRUE)
+          ## this bundle not working at the moment
+        # tinytex::install_tinytex(bundle = "TinyTeX-0")
       } else if (is.na(tl_location)) {
-        tinytex::install_tinytex(bundle = "TinyTeX-0")
+        tinytex::install_tinytex(force = TRUE)
+        ## this bundle not working at the moment
+        # tinytex::install_tinytex(bundle = "TinyTeX-0")
       } else if (tl_location == "/cloud/project/tt") {
         ## Posit appears to have **recently** moved 2020 install from /usr/share/texlive
         # tinytex::install_tinytex(bundle = "TinyTeX-0", force = TRUE, dir = tl_location)
-        tinytex::reinstall_tinytex(force = TRUE, dir = tl_location)
+        ## stopped working: no write access to default tl_location
+        # tinytex::reinstall_tinytex(force = TRUE, dir = tl_location)
+        tinytex::install_tinytex(force = TRUE)
       } else {
-        if (tinytex::is_tinytex()) {
-          cat("TinyTeX already installed; proceeding to LaTeX packages.\n")
-        } else {
-          tinytex::install_tinytex(bundle = "TinyTeX-0")
-        }
+        # if (tinytex::is_tinytex()) {
+        #  cat("TinyTeX already installed; proceeding to LaTeX packages.\n")
+        #} else {
+          tinytex::install_tinytex(force = TRUE)
+          ## this bundle not working at the moment
+          # tinytex::install_tinytex(bundle = "TinyTeX-0")
+        #}
       }
     } else {
       if (tinytex::is_tinytex()) {
