@@ -73,6 +73,12 @@ update_paks = function(cran_only = FALSE) {
   package_vector = package_vector[-which(!(package_vector %in% (tools::CRAN_package_db() |> dplyr::pull(Package))))]
   package_vector = c(package_vector, package_vector_not_cran)
 
+  # duckdb section may need work -- can't remove prior installation (?)
+  if ("duckdb" %in% package_vector) {
+    install.packages("duckdb")
+    package_vector = package_vector[package_vector != "duckdb"]
+  }
+
   pak::pkg_install(package_vector, upgrade = TRUE, ask = FALSE)
   pak::cache_clean()
 }
