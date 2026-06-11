@@ -4,8 +4,8 @@
 ## www.ryanmcshane.com                    ##
 ############################################
 
-## This script will prepare your machine
-##  for STAT27815.
+## This script will prepare your machine for the
+##  Unit Testing for Autograded R Code eCOTS workshop.
 
 # Making sure correct version of R is installed before proceeding
 page = readLines("https://cran.rstudio.com/bin/windows/base/release.html")
@@ -14,15 +14,21 @@ R_version = regmatches(x = win_exe, m = regexpr(pattern = "[0-9.]+", text = win_
 machine_R_version = paste0(R.Version()$major, ".", R.Version()$minor)
 R_not_updated = package_version(machine_R_version) < package_version(R_version)
 if (R_not_updated) {
-  message = paste0("Please install R ", R_version, " and then re-run this script!\n",
-                   "You may also need to tell RStudio to use R ", R_version,
-                   ":\nTools -> Global Options -> R version -> Change")
-  stop(message)
+  message = paste0(
+    "I recommend installing R ",
+    R_version,
+    " and then re-running this script!\n",
+    "You may also need to tell RStudio to use R ",
+    R_version,
+    ":\nTools -> Global Options -> R version -> Change",
+    "\n\nProceeding with remainder of installation script."
+  )
+  warning(message)
 }
 operating_system = c("Windows", "Ubuntu", "macOS") |>
   (\(y) y[sapply(X = y, FUN = grepl, x = sessionInfo()$running)])()
 
-stat27815_setup = function(
+workshop_setup = function(
     install_r_paks = TRUE,
     update_r_paks = TRUE,
     install_tinytex = TRUE,
@@ -32,31 +38,22 @@ stat27815_setup = function(
 
   if (use_pak & !any(installed.packages()[,1] == "pak")) install.packages("pak")
 
-  if (install_r_paks){
+  if (install_r_paks) {
     cat("Installing necessary R packages.\n")
     if (!any(installed.packages()[,1] == "pak")) install.packages("pak")
-    stat27815_R_paks = c("tinytex", "quarto", "tidyverse", "rstudioapi",
-                       "knitr", "igraph", "magick",
-                       "lobstr", "evaluate", "bench", "rlang",
-                       "lintr", "reprex", "glue", "formatR",
-                       "kableExtra", "gt", "gtExtras",
-                       "cowplot", "GGally", "gridExtra", "patchwork",
-                       "janitor", "RCurl",
-                       "rvest", "readxl", "haven", "jsonlite",
-                       "googlesheets4", "dtplyr", "dbplyr",
-                       "ggthemes", "ggridges", "ggbeeswarm", "ggrepel",
-                       "ggExtra", "paletteer", "wesanderson", "ggsci",
-                       "github::dill/beyonce",
-                       "github::davidsjoberg/ggstream",
-                       "github::BlakeRMills/MoMAColors",
-                       "github::johannesbjork/LaCroixColoR",
-                       "github::katiejolly/nationalparkcolors",
-                       "Lahman", "babynames"
-                       )
+    workshop_R_paks = c(
+    ## for student work/solutions
+      "tinytex", "quarto", "tidyverse", "knitr", "kableExtra", "lintr", "janitor",
+    ## for unit testing/autograding
+      "testthat", "callr", "rlang", "jsonlite", "mockr", "bench", "lobstr",
+      "box", "NCmisc", "mockery", "assertr", "gert", "ghclass", "purrr",
+      "github::math-mcshane/autogradeR",
+      "github::rstudio/ggcheck", "github::rstudio/gradethis"
+    )
     if (use_pak) {
-      pak::pkg_install(stat234_R_paks)
+      pak::pkg_install(workshop_R_paks)
     } else {
-      utils::install.packages(stat234_R_paks)
+      utils::install.packages(workshop_R_paks)
     }
   }
 
