@@ -32,7 +32,7 @@ stat27815_setup = function(
 
   if (use_pak & !any(installed.packages()[,1] == "pak")) install.packages("pak")
 
-  if (install_r_paks){
+  if (install_r_paks) {
     cat("Installing necessary R packages.\n")
     if (!any(installed.packages()[,1] == "pak")) install.packages("pak")
     stat27815_R_paks = c("tinytex", "quarto", "tidyverse", "rstudioapi",
@@ -54,9 +54,9 @@ stat27815_setup = function(
                        "Lahman", "babynames"
                        )
     if (use_pak) {
-      pak::pkg_install(stat234_R_paks)
+      pak::pkg_install(stat27815_R_paks)
     } else {
-      utils::install.packages(stat234_R_paks)
+      utils::install.packages(stat27815_R_paks)
     }
   }
 
